@@ -1,0 +1,446 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111;
+    color: #f5f5f5;
+    line-height: 1.6;
+}
+
+
+/* NAVIGATION */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 25px 6%;
+
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    opacity: 0.5;
+}
+
+
+/* HERO */
+
+.hero {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+
+    padding: 120px 8%;
+
+    background:
+        linear-gradient(
+            rgba(0,0,0,0.45),
+            rgba(0,0,0,0.65)
+        ),
+        url("images/hero.jpg");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    max-width: 750px;
+}
+
+.eyebrow,
+.section-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    opacity: 0.6;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(50px, 8vw, 110px);
+    line-height: 0.95;
+    margin-bottom: 30px;
+}
+
+.hero h1 span {
+    font-style: italic;
+    font-weight: 300;
+}
+
+.hero-text {
+    max-width: 550px;
+    font-size: 18px;
+    opacity: 0.8;
+    margin-bottom: 35px;
+}
+
+.hero-button {
+    display: inline-block;
+
+    padding: 14px 25px;
+
+    border: 1px solid white;
+
+    color: white;
+    text-decoration: none;
+
+    transition: 0.3s;
+}
+
+.hero-button:hover {
+    background: white;
+    color: black;
+}
+
+
+/* INTRO */
+
+.intro {
+    padding: 150px 10%;
+    max-width: 1100px;
+}
+
+.intro h2 {
+    font-size: clamp(35px, 5vw, 65px);
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 35px;
+}
+
+.intro > p:last-child {
+    max-width: 600px;
+    opacity: 0.65;
+}
+
+
+/* GENERAL SECTIONS */
+
+.categories,
+.featured,
+.stories {
+    padding: 120px 6%;
+}
+
+.section-heading {
+    margin-bottom: 60px;
+}
+
+.section-heading h2 {
+    font-size: clamp(40px, 6vw, 75px);
+    font-weight: 400;
+}
+
+.section-heading p:last-child {
+    opacity: 0.5;
+}
+
+
+/* CATEGORIES */
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.category {
+    min-height: 300px;
+
+    display: flex;
+    align-items: flex-end;
+
+    padding: 30px;
+
+    color: white;
+    text-decoration: none;
+
+    position: relative;
+    overflow: hidden;
+
+    background-size: cover;
+    background-position: center;
+
+    transition: transform 0.4s;
+}
+
+.category::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        transparent,
+        rgba(0,0,0,0.8)
+    );
+}
+
+.category:hover {
+    transform: scale(0.98);
+}
+
+.category div {
+    position: relative;
+    z-index: 2;
+}
+
+.category span {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.category h3 {
+    font-size: 35px;
+    font-weight: 400;
+}
+
+.category p {
+    opacity: 0.7;
+}
+
+
+/* CATEGORY BACKGROUNDS */
+
+.nature {
+    background-image: url("images/nature.jpg");
+}
+
+.people {
+    background-image: url("images/people.jpg");
+}
+
+.architecture {
+    background-image: url("images/architecture.jpg");
+}
+
+.street {
+    background-image: url("images/street.jpg");
+}
+
+.culture {
+    background-image: url("images/culture.jpg");
+}
+
+.abstract {
+    background-image: url("images/abstract.jpg");
+}
+
+
+/* FEATURED */
+
+.photo-grid {
+    display: grid;
+
+    grid-template-columns: 2fr 1fr 1fr;
+
+    gap: 20px;
+}
+
+.photo-placeholder {
+    height: 500px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #222;
+
+    color: #666;
+}
+
+.photo-card.large .photo-placeholder {
+    height: 650px;
+}
+
+.photo-info {
+    padding: 15px 0;
+}
+
+.photo-info h3 {
+    font-weight: 400;
+}
+
+.photo-info p {
+    opacity: 0.5;
+    font-size: 13px;
+}
+
+
+/* STORIES */
+
+.story {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 70px;
+
+    align-items: center;
+}
+
+.story-image {
+    height: 600px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #222;
+
+    color: #666;
+}
+
+.story-content h2 {
+    font-size: clamp(35px, 5vw, 65px);
+
+    font-weight: 400;
+
+    line-height: 1.1;
+
+    margin-bottom: 30px;
+}
+
+.story-content > p:not(.section-label) {
+    opacity: 0.6;
+    max-width: 500px;
+    margin-bottom: 30px;
+}
+
+.text-link {
+    color: white;
+    text-decoration: none;
+
+    border-bottom: 1px solid white;
+
+    padding-bottom: 5px;
+}
+
+
+/* ABOUT */
+
+.about {
+    padding: 180px 10%;
+
+    background: #e9e5dc;
+    color: #111;
+}
+
+.about h2 {
+    font-size: clamp(45px, 7vw, 90px);
+    line-height: 1;
+
+    font-weight: 400;
+
+    margin-bottom: 40px;
+}
+
+.about p:last-child {
+    max-width: 600px;
+    opacity: 0.7;
+}
+
+
+/* FOOTER */
+
+footer {
+    padding: 70px 6%;
+
+    text-align: center;
+
+    background: #080808;
+}
+
+.footer-logo {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+footer p {
+    opacity: 0.5;
+}
+
+.copyright {
+    margin-top: 30px;
+    font-size: 12px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .navbar {
+        padding: 20px;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .hero {
+        padding: 100px 25px;
+    }
+
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-card.large .photo-placeholder,
+    .photo-placeholder {
+        height: 450px;
+    }
+
+    .story {
+        grid-template-columns: 1fr;
+    }
+
+    .story-image {
+        height: 450px;
+    }
+
+    .intro,
+    .categories,
+    .featured,
+    .stories {
+        padding: 90px 25px;
+    }
+
+}
