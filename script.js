@@ -1,38 +1,104 @@
-// ======================================
-// PERSPECTIVE
-// Gallery Category Filter
-// ======================================
+// ========================================
+// PERSPECTIVE - PHOTOGRAPHY GALLERY
+// ========================================
 
-const filters = document.querySelectorAll(".filter");
-const photos = document.querySelectorAll(".photo");
+const galleryData = {
+    nature: 8,
+    people: 5,
+    architecture: 8,
+    street: 4,
+    culture: 3,
+    abstract: 5
+};
 
-filters.forEach(filter => {
 
-    filter.addEventListener("click", () => {
+// ========================================
+// CREATE GALLERY
+// ========================================
 
-        // Remove active class
-        filters.forEach(button => {
-            button.classList.remove("active");
+function createGallery(category) {
+
+    const gallery = document.getElementById("gallery");
+
+    if (!gallery) return;
+
+    gallery.innerHTML = "";
+
+    const totalPhotos = galleryData[category];
+
+    if (!totalPhotos) {
+        gallery.innerHTML = "<p>No photographs found.</p>";
+        return;
+    }
+
+    for (let i = 1; i <= totalPhotos; i++) {
+
+        const imagePath =
+            `images/${category}/${category}(${i}).jpg`;
+
+        const photoCard = document.createElement("div");
+
+        photoCard.className = "gallery-photo";
+
+        photoCard.innerHTML = `
+            <img 
+                src="${imagePath}" 
+                alt="${category} photograph ${i}"
+                loading="lazy"
+            >
+        `;
+
+        photoCard.addEventListener("click", function () {
+            openLightbox(imagePath);
         });
 
-        // Add active class
-        filter.classList.add("active");
+        gallery.appendChild(photoCard);
+    }
+}
 
-        const selectedCategory = filter.dataset.filter;
 
-        photos.forEach(photo => {
+// ========================================
+// LIGHTBOX
+// ========================================
 
-            if (
-                selectedCategory === "all" ||
-                photo.classList.contains(selectedCategory)
-            ) {
-                photo.classList.remove("hidden");
-            } else {
-                photo.classList.add("hidden");
-            }
+function openLightbox(imagePath) {
 
-        });
+    const lightbox = document.getElementById("lightbox");
 
-    });
+    const lightboxImage =
+        document.getElementById("lightbox-image");
+
+    if (!lightbox || !lightboxImage) return;
+
+    lightboxImage.src = imagePath;
+
+    lightbox.classList.add("active");
+}
+
+
+// ========================================
+// CLOSE LIGHTBOX
+// ========================================
+
+function closeLightbox() {
+
+    const lightbox =
+        document.getElementById("lightbox");
+
+    if (lightbox) {
+        lightbox.classList.remove("active");
+    }
+}
+
+
+// ========================================
+// CLOSE WITH ESCAPE KEY
+// ========================================
+
+document.addEventListener("keydown", function (event) {
+
+    if (event.key === "Escape") {
+        closeLightbox();
+    }
 
 });
