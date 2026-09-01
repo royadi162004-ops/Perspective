@@ -1,4 +1,4 @@
-const galleries = {
+const images = {
     nature: 8,
     people: 5,
     architecture: 8,
@@ -7,44 +7,23 @@ const galleries = {
     abstract: 5
 };
 
-document.querySelectorAll(".category").forEach(category => {
+const params = new URLSearchParams(window.location.search);
+const category = params.get("category");
 
-    category.addEventListener("click", function (event) {
+const gallery = document.getElementById("gallery");
 
-        event.preventDefault();
+if (gallery && images[category]) {
+    for (let i = 1; i <= images[category]; i++) {
 
-        const categoryName = [...this.classList].find(
-            name => galleries[name]
-        );
+        const card = document.createElement("div");
+        card.className = "gallery-item";
 
-        if (!categoryName) return;
+        const img = document.createElement("img");
 
-        const count = galleries[categoryName];
+        img.src = `image/${category}/${category}${i}.jpg`;
+        img.alt = `${category} photograph ${i}`;
 
-        let galleryHTML = `
-            <section class="gallery-page">
-                <h1>${categoryName}</h1>
-                <div class="gallery-grid">
-        `;
-
-        for (let i = 1; i <= count; i++) {
-
-            galleryHTML += `
-                <div class="gallery-item">
-                    <img 
-                        src="image/${categoryName}/${categoryName}${i}.jpg"
-                        alt="${categoryName} photograph ${i}"
-                    >
-                </div>
-            `;
-        }
-
-        galleryHTML += `
-                </div>
-            </section>
-        `;
-
-        document.body.innerHTML = galleryHTML;
-    });
-
-});
+        card.appendChild(img);
+        gallery.appendChild(card);
+    }
+}
