@@ -1,51 +1,156 @@
+// ========================================
+// PERSPECTIVE PHOTO GALLERY
+// ========================================
+
 const galleries = {
-    nature: 8,
-    people: 5,
-    architecture: 8,
-    street: 4,
-    culture: 3,
-    abstract: 5
+    nature: {
+        count: 8,
+        title: "Nature",
+        description: "Life beyond the concrete."
+    },
+
+    people: {
+        count: 5,
+        title: "People",
+        description: "Faces, emotions and stories."
+    },
+
+    architecture: {
+        count: 8,
+        title: "Architecture",
+        description: "Structures shaped by perspective."
+    },
+
+    street: {
+        count: 4,
+        title: "Street",
+        description: "Life as it happens."
+    },
+
+    culture: {
+        count: 3,
+        title: "Culture",
+        description: "Traditions, places and people."
+    },
+
+    abstract: {
+        count: 5,
+        title: "Abstract",
+        description: "When reality becomes interpretation."
+    }
 };
 
-document.querySelectorAll(".category").forEach(category => {
 
-    category.addEventListener("click", function (event) {
+// Get category from URL
+const params = new URLSearchParams(window.location.search);
+const category = params.get("category");
 
-        event.preventDefault();
 
-        const categoryName = Object.keys(galleries).find(name =>
-            this.classList.contains(name)
-        );
+// Find gallery elements
+const gallery = document.getElementById("gallery");
+const title = document.getElementById("gallery-title");
+const description = document.getElementById("gallery-description");
 
-        if (!categoryName) return;
 
-        const count = galleries[categoryName];
+// Load the selected category
+function loadGallery() {
 
-        let galleryHTML = `
-            <div class="gallery-page">
-                <h1>${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}</h1>
+    if (!gallery || !category) {
+        return;
+    }
 
-                <div class="gallery-grid">
-        `;
+    const data = galleries[category];
 
-        for (let i = 1; i <= count; i++) {
+    if (!data) {
+        gallery.innerHTML = "<p>Category not found.</p>";
+        return;
+    }
 
-            galleryHTML += `
-                <div class="gallery-item">
-                    <img 
-                        src="./image/${categoryName}/${categoryName}${i}.jpg"
-                        alt="${categoryName} photograph ${i}"
-                    >
-                </div>
-            `;
-        }
 
-        galleryHTML += `
-                </div>
-            </div>
-        `;
+    // Page heading
+    title.textContent = data.title;
 
-        document.body.innerHTML = galleryHTML;
-    });
+    description.textContent = data.description;
+
+
+    // Create photographs
+    for (let i = 1; i <= data.count; i++) {
+
+        const image = document.createElement("img");
+
+        image.src =
+            `image/${category}/${category}${i}.jpg`;
+
+        image.alt =
+            `${data.title} photograph ${i}`;
+
+        image.loading = "lazy";
+
+
+        // Create photo container
+        const photo = document.createElement("div");
+
+        photo.className = "gallery-photo";
+
+        photo.appendChild(image);
+
+
+        // Open image in lightbox
+        photo.addEventListener("click", function () {
+
+            openLightbox(image.src);
+
+        });
+
+
+        gallery.appendChild(photo);
+    }
+}
+
+
+// ========================================
+// LIGHTBOX
+// ========================================
+
+function openLightbox(imageSrc) {
+
+    const lightbox =
+        document.getElementById("lightbox");
+
+    const lightboxImage =
+        document.getElementById("lightbox-image");
+
+
+    lightboxImage.src = imageSrc;
+
+    lightbox.classList.add("active");
+}
+
+
+function closeLightbox() {
+
+    const lightbox =
+        document.getElementById("lightbox");
+
+    lightbox.classList.remove("active");
+}
+
+
+// Close lightbox with Escape
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+
+        closeLightbox();
+
+    }
+
+});
+
+
+// Start
+document.addEventListener("DOMContentLoaded", function() {
+
+    loadGallery();
 
 });
