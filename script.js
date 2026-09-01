@@ -1,156 +1,50 @@
-// ========================================
-// PERSPECTIVE PHOTO GALLERY
-// ========================================
-
 const galleries = {
-    nature: {
-        count: 8,
-        title: "Nature",
-        description: "Life beyond the concrete."
-    },
-
-    people: {
-        count: 5,
-        title: "People",
-        description: "Faces, emotions and stories."
-    },
-
-    architecture: {
-        count: 8,
-        title: "Architecture",
-        description: "Structures shaped by perspective."
-    },
-
-    street: {
-        count: 4,
-        title: "Street",
-        description: "Life as it happens."
-    },
-
-    culture: {
-        count: 3,
-        title: "Culture",
-        description: "Traditions, places and people."
-    },
-
-    abstract: {
-        count: 5,
-        title: "Abstract",
-        description: "When reality becomes interpretation."
-    }
+    nature: 8,
+    people: 5,
+    architecture: 8,
+    street: 4,
+    culture: 3,
+    abstract: 5
 };
 
+document.querySelectorAll(".category").forEach(category => {
 
-// Get category from URL
-const params = new URLSearchParams(window.location.search);
-const category = params.get("category");
+    category.addEventListener("click", function (event) {
 
+        event.preventDefault();
 
-// Find gallery elements
-const gallery = document.getElementById("gallery");
-const title = document.getElementById("gallery-title");
-const description = document.getElementById("gallery-description");
+        const categoryName = [...this.classList].find(
+            name => galleries[name]
+        );
 
+        if (!categoryName) return;
 
-// Load the selected category
-function loadGallery() {
+        const count = galleries[categoryName];
 
-    if (!gallery || !category) {
-        return;
-    }
+        let galleryHTML = `
+            <section class="gallery-page">
+                <h1>${categoryName}</h1>
+                <div class="gallery-grid">
+        `;
 
-    const data = galleries[category];
+        for (let i = 1; i <= count; i++) {
 
-    if (!data) {
-        gallery.innerHTML = "<p>Category not found.</p>";
-        return;
-    }
+            galleryHTML += `
+                <div class="gallery-item">
+                    <img 
+                        src="image/${categoryName}/${categoryName}${i}.jpg"
+                        alt="${categoryName} photograph ${i}"
+                    >
+                </div>
+            `;
+        }
 
+        galleryHTML += `
+                </div>
+            </section>
+        `;
 
-    // Page heading
-    title.textContent = data.title;
-
-    description.textContent = data.description;
-
-
-    // Create photographs
-    for (let i = 1; i <= data.count; i++) {
-
-        const image = document.createElement("img");
-
-        image.src =
-            `image/${category}/${category}${i}.jpg`;
-
-        image.alt =
-            `${data.title} photograph ${i}`;
-
-        image.loading = "lazy";
-
-
-        // Create photo container
-        const photo = document.createElement("div");
-
-        photo.className = "gallery-photo";
-
-        photo.appendChild(image);
-
-
-        // Open image in lightbox
-        photo.addEventListener("click", function () {
-
-            openLightbox(image.src);
-
-        });
-
-
-        gallery.appendChild(photo);
-    }
-}
-
-
-// ========================================
-// LIGHTBOX
-// ========================================
-
-function openLightbox(imageSrc) {
-
-    const lightbox =
-        document.getElementById("lightbox");
-
-    const lightboxImage =
-        document.getElementById("lightbox-image");
-
-
-    lightboxImage.src = imageSrc;
-
-    lightbox.classList.add("active");
-}
-
-
-function closeLightbox() {
-
-    const lightbox =
-        document.getElementById("lightbox");
-
-    lightbox.classList.remove("active");
-}
-
-
-// Close lightbox with Escape
-document.addEventListener("keydown", function(event) {
-
-    if (event.key === "Escape") {
-
-        closeLightbox();
-
-    }
-
-});
-
-
-// Start
-document.addEventListener("DOMContentLoaded", function() {
-
-    loadGallery();
+        document.body.innerHTML = galleryHTML;
+    });
 
 });
