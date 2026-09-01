@@ -6,8 +6,9 @@ const gallery = document.getElementById("gallery");
 const galleryTitle = document.getElementById("gallery-title");
 const galleryDescription = document.getElementById("gallery-description");
 
+
 // Number of photographs in each category
-const photoCounts = {
+const categories = {
     nature: 8,
     people: 5,
     architecture: 8,
@@ -16,9 +17,6 @@ const photoCounts = {
     abstract: 5
 };
 
-// Get category from URL
-const params = new URLSearchParams(window.location.search);
-const category = params.get("category");
 
 // Category information
 const categoryInfo = {
@@ -54,59 +52,67 @@ const categoryInfo = {
 };
 
 
-// ===============================
-// LOAD GALLERY
-// ===============================
+// Get category from URL
+const params = new URLSearchParams(window.location.search);
+const category = params.get("category")?.toLowerCase() || "nature";
 
-function loadGallery() {
 
-    if (!category || !photoCounts[category]) {
-        galleryTitle.textContent = "Photography";
-        galleryDescription.textContent =
-            "A collection of moments seen from a different perspective.";
-        return;
-    }
+// Check if category exists
+if (!categories[category]) {
 
-    // Update heading
+    galleryTitle.textContent = "Photography";
+    galleryDescription.textContent =
+        "A collection of moments seen from a different perspective.";
+
+} else {
+
+    // Update page heading
     galleryTitle.textContent = categoryInfo[category].title;
     galleryDescription.textContent = categoryInfo[category].description;
 
-    // Clear gallery
-    gallery.innerHTML = "";
 
-    // Add photographs
-    for (let i = 1; i <= photoCounts[category]; i++) {
+    // Create photographs
+    for (let i = 1; i <= categories[category]; i++) {
 
-        const imagePath =
-            `image/${category}/${category}${i}.jpg`;
+        const image = document.createElement("img");
 
-        const card = document.createElement("div");
-        card.className = "gallery-item";
+        image.src = `image/${category}/${category}${i}.jpg`;
 
-        card.innerHTML = `
-            <img
-                src="${imagePath}"
-                alt="${categoryInfo[category].title} photograph ${i}"
-                loading="lazy"
-                onclick="openLightbox('${imagePath}')"
-            >
-        `;
+        image.alt =
+            `${categoryInfo[category].title} photograph ${i}`;
 
-        gallery.appendChild(card);
+        image.className = "gallery-image";
+
+
+        // If image cannot be found
+        image.onerror = function () {
+            console.log("Image not found:", image.src);
+            image.style.display = "none";
+        };
+
+
+        // Open image in lightbox
+        image.onclick = function () {
+            openLightbox(image.src);
+        };
+
+
+        gallery.appendChild(image);
     }
 }
+
 
 
 // ===============================
 // LIGHTBOX
 // ===============================
 
-function openLightbox(imagePath) {
+function openLightbox(imageSrc) {
 
     const lightbox = document.getElementById("lightbox");
     const lightboxImage = document.getElementById("lightbox-image");
 
-    lightboxImage.src = imagePath;
+    lightboxImage.src = imageSrc;
 
     lightbox.classList.add("active");
 }
@@ -121,17 +127,10 @@ function closeLightbox() {
 
 
 // Close lightbox when clicking outside image
-document.getElementById("lightbox").addEventListener("click", function(event) {
+document.getElementById("lightbox").addEventListener("click", function (event) {
 
     if (event.target === this) {
         closeLightbox();
     }
 
 });
-
-
-// ===============================
-// START
-// ===============================
-
-loadGallery();
