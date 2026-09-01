@@ -1,56 +1,125 @@
 // ========================================
-// PERSPECTIVE - PHOTOGRAPHY GALLERY
+// PERSPECTIVE - GALLERY SYSTEM
 // ========================================
 
 const galleryData = {
-    nature: 8,
-    people: 5,
-    architecture: 8,
-    street: 4,
-    culture: 3,
-    abstract: 5
+    nature: {
+        count: 8,
+        title: "Nature",
+        description: "Life beyond the concrete."
+    },
+
+    people: {
+        count: 5,
+        title: "People",
+        description: "Faces, emotions and stories."
+    },
+
+    architecture: {
+        count: 8,
+        title: "Architecture",
+        description: "Structures shaped by perspective."
+    },
+
+    street: {
+        count: 4,
+        title: "Street",
+        description: "Life as it happens."
+    },
+
+    culture: {
+        count: 3,
+        title: "Culture",
+        description: "Traditions, places and people."
+    },
+
+    abstract: {
+        count: 5,
+        title: "Abstract",
+        description: "When reality becomes interpretation."
+    }
 };
 
 
 // ========================================
-// CREATE GALLERY
+// GET CATEGORY FROM URL
 // ========================================
 
-function createGallery(category) {
+const urlParams = new URLSearchParams(window.location.search);
+
+const category = urlParams.get("category");
+
+
+// ========================================
+// LOAD GALLERY
+// ========================================
+
+function loadGallery() {
 
     const gallery = document.getElementById("gallery");
 
-    if (!gallery) return;
-
-    gallery.innerHTML = "";
-
-    const totalPhotos = galleryData[category];
-
-    if (!totalPhotos) {
-        gallery.innerHTML = "<p>No photographs found.</p>";
+    if (!gallery || !category) {
         return;
     }
 
-    for (let i = 1; i <= totalPhotos; i++) {
+    const data = galleryData[category];
+
+    if (!data) {
+        gallery.innerHTML = "<p>Category not found.</p>";
+        return;
+    }
+
+
+    // Update page title
+
+    const title = document.getElementById("gallery-title");
+
+    if (title) {
+        title.textContent = data.title;
+    }
+
+
+    // Update description
+
+    const description =
+        document.getElementById("gallery-description");
+
+    if (description) {
+        description.textContent = data.description;
+    }
+
+
+    // Create photographs
+
+    for (let i = 1; i <= data.count; i++) {
 
         const imagePath =
             `images/${category}/${category}(${i}).jpg`;
 
-        const photoCard = document.createElement("div");
+
+        const photoCard =
+            document.createElement("div");
 
         photoCard.className = "gallery-photo";
 
+
         photoCard.innerHTML = `
-            <img 
-                src="${imagePath}" 
-                alt="${category} photograph ${i}"
+            <img
+                src="${imagePath}"
+                alt="${data.title} photograph ${i}"
                 loading="lazy"
             >
         `;
 
+
+        // Open photograph
+
         photoCard.addEventListener("click", function () {
+
             openLightbox(imagePath);
+
         });
+
 
         gallery.appendChild(photoCard);
     }
@@ -63,14 +132,19 @@ function createGallery(category) {
 
 function openLightbox(imagePath) {
 
-    const lightbox = document.getElementById("lightbox");
+    const lightbox =
+        document.getElementById("lightbox");
 
-    const lightboxImage =
+    const image =
         document.getElementById("lightbox-image");
 
-    if (!lightbox || !lightboxImage) return;
 
-    lightboxImage.src = imagePath;
+    if (!lightbox || !image) {
+        return;
+    }
+
+
+    image.src = imagePath;
 
     lightbox.classList.add("active");
 }
@@ -85,20 +159,36 @@ function closeLightbox() {
     const lightbox =
         document.getElementById("lightbox");
 
+
     if (lightbox) {
+
         lightbox.classList.remove("active");
+
     }
 }
 
 
 // ========================================
-// CLOSE WITH ESCAPE KEY
+// ESC KEY
 // ========================================
 
-document.addEventListener("keydown", function (event) {
+document.addEventListener("keydown", function(event) {
 
     if (event.key === "Escape") {
+
         closeLightbox();
+
     }
+
+});
+
+
+// ========================================
+// START GALLERY
+// ========================================
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    loadGallery();
 
 });
