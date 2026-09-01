@@ -13,8 +13,8 @@ document.querySelectorAll(".category").forEach(category => {
 
         event.preventDefault();
 
-        const categoryName = [...this.classList].find(
-            name => galleries[name]
+        const categoryName = Object.keys(galleries).find(name =>
+            this.classList.contains(name)
         );
 
         if (!categoryName) return;
@@ -22,8 +22,9 @@ document.querySelectorAll(".category").forEach(category => {
         const count = galleries[categoryName];
 
         let galleryHTML = `
-            <section class="gallery-page">
-                <h1>${categoryName}</h1>
+            <div class="gallery-page">
+                <h1>${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}</h1>
+
                 <div class="gallery-grid">
         `;
 
@@ -32,7 +33,7 @@ document.querySelectorAll(".category").forEach(category => {
             galleryHTML += `
                 <div class="gallery-item">
                     <img 
-                        src="image/${categoryName}/${categoryName}${i}.jpg"
+                        src="./image/${categoryName}/${categoryName}${i}.jpg"
                         alt="${categoryName} photograph ${i}"
                     >
                 </div>
@@ -41,7 +42,7 @@ document.querySelectorAll(".category").forEach(category => {
 
         galleryHTML += `
                 </div>
-            </section>
+            </div>
         `;
 
         document.body.innerHTML = galleryHTML;
